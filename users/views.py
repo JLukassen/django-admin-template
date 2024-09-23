@@ -18,6 +18,7 @@ def register(request):
     elif request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
+            user = form.save(commit=False)
+            user.backend = "django.contrib.auth.backends.ModelBackend"
+            user.save()
             return redirect(reverse("dashboard"))
